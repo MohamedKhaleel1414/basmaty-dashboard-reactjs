@@ -1,0 +1,18 @@
+.dataResult{
+    position: absolute; top:12rem;
+    background-color: white;
+    overflow: hidden;
+    overflow-y: auto;
+    width: 20%;
+}
+
+.dataResult::-webkit-scrollbar{
+    display: none;
+}
+
+.dataItem:hover{
+    background-color:  #E9ECEF;
+    cursor: pointer;
+    
+}
+

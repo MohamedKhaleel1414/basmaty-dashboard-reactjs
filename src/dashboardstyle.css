@@ -1,0 +1,35 @@
+/* aside,.chartone,.charttwo,.chartthree,.sectiontwo{
+    box-shadow: 2px 2px 1px 1px lightgray;
+} */
+li{
+    padding-top: 4%;padding-bottom: 4%;
+    /* font-size: larger; */
+}
+li:hover{
+    color: #C13F55;cursor: pointer;
+}
+.active {
+    color: #C13F55;border-left: #C13F55 3px solid;
+    padding-left: 1rem;font-weight: 600;
+}
+.chartone{
+    /* background-color: #F7D9E3; */
+    background-image: linear-gradient(180deg,#F7D9E3,#faf3f6);
+}
+.charttwo{
+    background-image: linear-gradient(180deg,#D6F3F6,#f3feff);
+}
+.chartthree{
+    background-image: linear-gradient(180deg,#c9f8c7,#f0fdf0);
+}
+.searchbtn{
+    background-color: #F7C9D3;color: #C13F55;border: #C13F55 1px solid;
+    font-weight: 600;
+}
+.searchbtn:hover{
+    background-color:#C13F55;color:whitesmoke;border: #F7C9D3 1px solid;
+    font-weight: 600;
+}
+.admincard{
+    opacity: 0%;
+}
