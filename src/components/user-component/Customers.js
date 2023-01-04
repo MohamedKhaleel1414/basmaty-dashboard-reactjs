@@ -9,6 +9,7 @@ function Customers() {
 
     const [customers, setCustomers] = useState([])
     const [selected, setSelected] = useState([])
+    const [flag, setFlag] = useState(false)
 
     // Get Customers from Database
     useEffect(() => {
@@ -18,6 +19,15 @@ function Customers() {
             setSelected(res.data.data)
         })
     }, [])
+
+    // Rerendering after any operation
+    useEffect(() => {
+        axiosInstance.get('/api/v1/dashboard/users').then((res) => {
+            console.log(res.data.data)
+            setCustomers(res.data.data)
+            setSelected(res.data.data)
+        })
+    }, [flag])
 
     // Search bar functions
     const [searchCustomer, setSearchCustomer] = useState([]);
@@ -34,8 +44,8 @@ function Customers() {
             setSearchCustomer(dataFiltered);
     };
 
-    function showUsers(){
-        if(searchedUsers.length !== 0) setSelected(searchedUsers)
+    function showUsers() {
+        if (searchedUsers.length !== 0) setSelected(searchedUsers)
     }
 
     function showCustomer(it) {
@@ -72,20 +82,28 @@ function Customers() {
         axiosInstance.get(`/api/v1/dashboard/users/ban/${customerID.id}`).then((res) => {
             console.log(res.data)
             swal("Customer Banned successfully")
+            if (flag === false)
+                setFlag(true)
+            if (flag === true)
+                setFlag(false)
         })
     }
 
     // UnBan Customer
-    function unbanUser(){
+    function unbanUser() {
         axiosInstance.get(`/api/v1/dashboard/users/unban/${customerID.id}`).then((res) => {
             console.log(res.data)
             swal("Customer UnBanned successfully")
+            if (flag === false)
+                setFlag(true)
+            if (flag === true)
+                setFlag(false)
         })
     }
 
     // Export Customer
-    function exportCustomer(){
-        axiosInstance.get('/api/v1/dashboard/users/export').then((res)=>{
+    function exportCustomer() {
+        axiosInstance.get('/api/v1/dashboard/users/export').then((res) => {
             console.log(res.data)
             swal("File exported successfully")
         })
@@ -98,8 +116,8 @@ function Customers() {
                     <div className="d-flex justify-content-between mb-4">
                         <h3>Customers Data</h3>
                         <div className='d-flex gap-3'>
-                            <button className='btn btn-success'><i className='bx bx-import'></i> Import Excell File</button>
-                            <button className='btn btn-info text-light'><i className='bx bx-export' onClick={exportCustomer}></i> Export Excell File</button>
+                            <button type='button' className='btn btn-success'><i className='bx bx-import'></i> Import Excell File</button>
+                            <button type='button' className='btn btn-info text-light' onClick={exportCustomer}><i className='bx bx-export'></i> Export Excell File</button>
                         </div>
                         <div className='d-flex flex-column'>
                             <div className="d-flex">
@@ -140,7 +158,7 @@ function Customers() {
                                         <td>
                                             <button className="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" onClick={() => storeID(admin)} aria-expanded="false" aria-controls="collapseWidthExample"><i className="bx bx-detail"></i></button>
                                         </td>
-                                        <td> 
+                                        <td>
                                             {admin.ban === "unbanned" && <button className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#adminModelBan" onClick={() => storeID(admin)}><i className='bx bx-minus '></i></button>}
                                             {admin.ban === "banned" && <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#adminModelUnBan" onClick={() => storeID(admin)}><i className='bx bx-check'></i></button>}
                                             <div className="modal fade text-start" id="adminModelBan" tabIndex={-1} aria-labelledby="adminModelBanLabel" aria-hidden="true">
@@ -208,8 +226,8 @@ function Customers() {
                         <div className='ps-5'>
                             <h5>Full Name</h5>
                             <p>{customerID.name}</p>
-                            <h5>ID</h5>
-                            <p>{customerID.id}</p>
+                            <h5>Status</h5>
+                            <p>{customerID.ban}</p>
                             <h5>E-mail</h5>
                             <p>{customerID.email}</p>
                             <h5>Join Date</h5>

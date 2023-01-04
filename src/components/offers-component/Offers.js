@@ -12,6 +12,7 @@ function Offers() {
     const [offers, setOffers] = useState([])
     const [selected, setSelected] = useState([])
     const [salons, setSalons] = useState([])
+    const [flag, setFlag] = useState(false)
 
     // Get Offers from Database
     useEffect(() => {
@@ -25,6 +26,19 @@ function Offers() {
             setSalons(res.data.data)
         })
     }, [])
+
+    // Rerendering after any operation
+    useEffect(() => {
+        axiosInstance.get('/api/v1/dashboard/offers').then((res) => {
+            console.log(res.data.data)
+            setOffers(res.data.data)
+            setSelected(res.data.data)
+        })
+        axiosInstance.get('/api/v1/dashboard/shops').then((res) => {
+            console.log(res.data.data)
+            setSalons(res.data.data)
+        })
+    }, [flag])
 
     // Search bar functions
     const [searchCustomer, setSearchCustomer] = useState([]);
@@ -81,6 +95,10 @@ function Offers() {
         axiosInstance.delete(`api/v1/dashboard/offers/${serviceID.id}`).then((res) => {
             console.log(res.data)
             swal("Offer deleted successfuly")
+            if (flag === false)
+                setFlag(true)
+            if (flag === true)
+                setFlag(false)
         })
     }
 
@@ -113,6 +131,10 @@ function Offers() {
         axiosInstance.post('/api/v1/dashboard/offers', formD).then((res) => {
             console.log(res.data)
             swal("New Offer added successfully")
+            if (flag === false)
+                setFlag(true)
+            if (flag === true)
+                setFlag(false)
         })
     };
 
@@ -145,6 +167,10 @@ function Offers() {
         axiosInstance.patch(`/api/v1/dashboard/offers/${serviceID.id}`, formDU).then((res) => {
             console.log(res.data)
             swal("Offer updated successfully")
+            if (flag === false)
+                setFlag(true)
+            if (flag === true)
+                setFlag(false)
         })
     };
 
@@ -163,8 +189,8 @@ function Offers() {
                     <div className="d-flex justify-content-between mb-4">
                         <h3>Offers Data</h3>
                         <div className='d-flex gap-3'>
-                            <button className='btn btn-success'><i className='bx bx-import'></i> Import Excell File</button>
-                            <button className='btn btn-info text-light'><i className='bx bx-export' onClick={exportOffer}></i> Export Excell File</button>
+                            <button type='button' className='btn btn-success'><i className='bx bx-import'></i> Import Excell File</button>
+                            <button type='button' className='btn btn-info text-light' onClick={exportOffer}><i className='bx bx-export'></i> Export Excell File</button>
                         </div>
                         <div className='d-flex flex-column'>
                             <div className="d-flex">
@@ -394,7 +420,7 @@ function Offers() {
                         <div className='w-25'>
                             <img src={serviceID.logo_image} alt={serviceID.id} className='w-100' />
                         </div>
-                        <div className='ps-5'>
+                        <div className='ps-5 w-25'>
                             <h5>Offer Title</h5>
                             <p>{serviceID.title}</p>
                             <h5>Offered By</h5>

@@ -11,6 +11,7 @@ function Admin() {
 
   const [admins, setAdmins] = useState([])
   const [selected, setSelected] = useState([])
+  const [flag, setFlag] = useState(false)
 
   // Get Admins from Database
   useEffect(() => {
@@ -20,6 +21,15 @@ function Admin() {
       setSelected(res.data.data)
     })
   }, [])
+
+  // Rerendering after any operation
+  useEffect(() => {
+    axiosInstance.get('/api/v1/dashboard/admins').then((res) => {
+      console.log(res.data.data)
+      setAdmins(res.data.data)
+      setSelected(res.data.data)
+    })
+  }, [flag])
 
   // Search bar functions
   const [searchAdmin, setSearchAdmin] = useState([]);
@@ -85,6 +95,10 @@ function Admin() {
       axiosInstance.post('/api/v1/dashboard/admins', values).then((res) => {
         console.log(res.data)
         swal("New admin added successfully")
+        if (flag === false)
+          setFlag(true)
+        if (flag === true)
+          setFlag(false)
       })
     }
   })
@@ -101,7 +115,7 @@ function Admin() {
       last_name: '',
       email: '',
       password: '',
-      password_confirmation: '' 
+      password_confirmation: ''
     },
     validationSchema: yup.object().shape({
       first_name: yup.string().required("must enter your first name"),
@@ -115,6 +129,10 @@ function Admin() {
       axiosInstance.patch(`/api/v1/dashboard/admins/${adminID.id}`, values).then((res) => {
         console.log(res.data)
         swal("Admin updated successfully")
+        if (flag === false)
+          setFlag(true)
+        if (flag === true)
+          setFlag(false)
       })
     }
   })
@@ -124,12 +142,16 @@ function Admin() {
     axiosInstance.delete(`/api/v1/dashboard/admins/${adminID.id}`).then((res) => {
       console.log(res.data)
       swal("Admin deleted successfully")
+      if (flag === false)
+        setFlag(true)
+      if (flag === true)
+        setFlag(false)
     })
   }
 
   // Export Admin
-  function exportAdmin(){
-    axiosInstance.get('/api/v1/dashboard/admins/export').then((res)=>{
+  function exportAdmin() {
+    axiosInstance.get('/api/v1/dashboard/admins/export').then((res) => {
       console.log(res.data)
       swal("File exported successfully")
     })
@@ -142,8 +164,8 @@ function Admin() {
           <div className="d-flex justify-content-between mb-4">
             <h3>Admin Data</h3>
             <div className='d-flex gap-3'>
-              <button className='btn btn-success'><i className='bx bx-import'></i> Import Excell File</button>
-              <button className='btn btn-info text-light'><i className='bx bx-export' onClick={exportAdmin}></i> Export Excell File</button>
+              <button type='button' className='btn btn-success'><i className='bx bx-import'></i> Import Excell File</button>
+              <button type='button' className='btn btn-info text-light' onClick={exportAdmin}><i className='bx bx-export'></i> Export Excell File</button>
             </div>
             <div className='d-flex flex-column'>
               <div className="d-flex">

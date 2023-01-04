@@ -11,6 +11,7 @@ function Services() {
 
     const [services, setServices] = useState([])
     const [selected, setSelected] = useState([])
+    const [flag, setFlag] = useState(false)
 
     // Get services from Database
     useEffect(() => {
@@ -20,6 +21,15 @@ function Services() {
             setSelected(res.data.data)
         })
     }, [])
+
+    // Rerendering after any operation
+    useEffect(() => {
+        axiosInstance.get('/api/v1/dashboard/services').then((res) => {
+            console.log(res.data.data)
+            setServices(res.data.data)
+            setSelected(res.data.data)
+        })
+    }, [flag])
 
     // Search bar functions
     const [searchCustomer, setSearchCustomer] = useState([]);
@@ -92,6 +102,10 @@ function Services() {
         axiosInstance.post('/api/v1/dashboard/services', formD).then((res) => {
             console.log(res.data)
             swal("New Service added successfully")
+            if (flag === false)
+                setFlag(true)
+            if (flag === true)
+                setFlag(false)
         })
     };
 
@@ -118,6 +132,10 @@ function Services() {
         axiosInstance.patch(`/api/v1/dashboard/services/${serviceID.id}`, formDU).then((res) => {
             console.log(res.data)
             swal("Service updated successfully")
+            if (flag === false)
+                setFlag(true)
+            if (flag === true)
+                setFlag(false)
         })
     };
 
@@ -126,12 +144,16 @@ function Services() {
         axiosInstance.delete(`/api/v1/dashboard/services/${serviceID.id}`).then((res) => {
             console.log(res.data)
             swal("Service deleted successfully")
+            if (flag === false)
+                setFlag(true)
+            if (flag === true)
+                setFlag(false)
         })
     }
 
     // Export Service
-    function exportService(){
-        axiosInstance.get('/api/v1/dashboard/services/export').then((res)=>{
+    function exportService() {
+        axiosInstance.get('/api/v1/dashboard/services/export').then((res) => {
             console.log(res.data)
             swal("File exported successfully")
         })
@@ -144,8 +166,8 @@ function Services() {
                     <div className="d-flex justify-content-between mb-4">
                         <h3>Services Data</h3>
                         <div className='d-flex gap-3'>
-                            <button className='btn btn-success'><i className='bx bx-import'></i> Import Excell File</button>
-                            <button className='btn btn-info text-light'><i className='bx bx-export' onClick={exportService}></i> Export Excell File</button>
+                            <button type='button' className='btn btn-success'><i className='bx bx-import'></i> Import Excell File</button>
+                            <button type='button' className='btn btn-info text-light' onClick={exportService}><i className='bx bx-export'></i> Export Excell File</button>
                         </div>
                         <div className='d-flex flex-column'>
                             <div className="d-flex">

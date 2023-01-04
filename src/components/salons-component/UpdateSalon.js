@@ -15,6 +15,7 @@ function UpdateSalon() {
     const [selected, setSelected] = useState([])
     const [services, setServices] = useState([])
     const [cities, setCities] = useState([])
+    const [flag, setFlag] = useState(false)
 
     // Get salons from Database
     useEffect(() => {
@@ -32,6 +33,23 @@ function UpdateSalon() {
             setCities(res.data.data)
         })
     }, [])
+
+    // Rerendering after any operation
+    useEffect(() => {
+        axiosInstance.get('/api/v1/dashboard/shops').then((res) => {
+            console.log(res.data.data)
+            setSalons(res.data.data)
+            setSelected(res.data.data)
+        })
+        axiosInstance.get('/api/v1/dashboard/services').then((res) => {
+            console.log(res.data.data)
+            setServices(res.data.data)
+        })
+        axiosInstance.get('/api/v1/dashboard/cities').then((res) => {
+            console.log(res.data.data)
+            setCities(res.data.data)
+        })
+    }, [flag])
 
     // Update Salon Data
     const { register: registeru, handleSubmit: handleSubmitu, formState: { errors: errorsu }, } = useForm({
@@ -81,12 +99,16 @@ function UpdateSalon() {
         formD.append("cities", parseInt(values.cities))
         formD.append("workingHours", workingHours)
         formD.append("address", contacts)
-        formD.append("address_latitude",lat)
-        formD.append("address_longitude",lng)
+        formD.append("address_latitude", lat)
+        formD.append("address_longitude", lng)
         console.log(values)
         axiosInstance.patch(`/api/v1/dashboard/shops/${iD.id}`, formD).then((res) => {
             console.log(res.data)
             swal("New Service added successfully")
+            if (flag === false)
+                setFlag(true)
+            if (flag === true)
+                setFlag(false)
         })
     };
 

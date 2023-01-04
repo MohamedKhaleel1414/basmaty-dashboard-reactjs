@@ -11,22 +11,23 @@ import { useJsApiLoader, GoogleMap, MarkerF, Autocomplete } from '@react-google-
 
 function Salons() {
 
-  let workingHours1 = {
-    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
-    "start_from": "10:00",
-    "end_at": "22:00"
-  }
-  let workingHours2 = {
-    "days": ["Friday", "Saturday"],
-    "start_from": "13:00",
-    "end_at": "23:00"
-  }
+  // let workingHours1 = {
+  //   "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+  //   "start_from": "10:00",
+  //   "end_at": "22:00"
+  // }
+  // let workingHours2 = {
+  //   "days": ["Friday", "Saturday"],
+  //   "start_from": "13:00",
+  //   "end_at": "23:00"
+  // }
 
   const nav = useNavigate()
   const [salons, setSalons] = useState([])
   const [selected, setSelected] = useState([])
   const [services, setServices] = useState([])
   const [cities, setCities] = useState([])
+  const [flag, setFlag] = useState(false)
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   const hours = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
 
@@ -46,6 +47,23 @@ function Salons() {
       setCities(res.data.data)
     })
   }, [])
+
+  // Rerendering after any operation
+  useEffect(() => {
+    axiosInstance.get('/api/v1/dashboard/shops').then((res) => {
+      console.log(res.data.data)
+      setSalons(res.data.data)
+      setSelected(res.data.data)
+    })
+    axiosInstance.get('/api/v1/dashboard/services').then((res) => {
+      console.log(res.data.data)
+      setServices(res.data.data)
+    })
+    axiosInstance.get('/api/v1/dashboard/cities').then((res) => {
+      console.log(res.data.data)
+      setCities(res.data.data)
+    })
+  }, [flag])
 
   // Search bar functions
   const [searchCustomer, setSearchCustomer] = useState([]);
@@ -107,6 +125,10 @@ function Salons() {
     axiosInstance.delete(`/api/v1/dashboard/shops/${serviceID.id}`).then((res) => {
       console.log(res.data)
       swal("Service deleted successfully")
+      if(flag === false)
+            setFlag(true)
+            if(flag === true)
+            setFlag(false)
     })
   }
 
@@ -125,8 +147,8 @@ function Salons() {
       start_from: '',
       end_at: '',
       address: '',
-      address_latitude:'',
-      address_longitude:''
+      address_latitude: '',
+      address_longitude: ''
     },
   });
 
@@ -158,12 +180,16 @@ function Salons() {
     formD.append("cities", parseInt(values.cities))
     formD.append("workingHours", workingHours)
     formD.append("address", contacts)
-    formD.append("address_latitude",lat)
-    formD.append("address_longitude",lng)
+    formD.append("address_latitude", lat)
+    formD.append("address_longitude", lng)
     console.log(values)
     axiosInstance.post('/api/v1/dashboard/shops', formD).then((res) => {
       console.log(res.data)
       swal("New Service added successfully")
+      if(flag === false)
+            setFlag(true)
+            if(flag === true)
+            setFlag(false)
     })
   };
 
@@ -182,7 +208,7 @@ function Salons() {
     setSearchResult(autocomplete);
   }
 
-  function onPlaceChanged(){
+  function onPlaceChanged() {
     if (searchResult != null) {
       setLat(searchResult.getPlace().geometry.location.lat())
       setLng(searchResult.getPlace().geometry.location.lng())
@@ -195,7 +221,7 @@ function Salons() {
 
 
   return (
-    <article style={{ marginTop: '8rem', minHeight:"19.2rem" }}>
+    <article style={{ marginTop: '8rem', minHeight: "19.2rem" }}>
       <div className="accordion accordion-flush" id="accordionFlushExample">
         <div className="d-flex justify-content-center">
           <div className="accordion-item w-100">
@@ -218,8 +244,8 @@ function Salons() {
             <div className="d-flex justify-content-between mb-4">
               <h3>Salons Data</h3>
               <div className='d-flex gap-3'>
-                <button className='btn btn-success'><i className='bx bx-import'></i> Import Excell File</button>
-                <button className='btn btn-info text-light'><i className='bx bx-export' ></i> Export Excell File</button>
+                <button type='button' className='btn btn-success'><i className='bx bx-import'></i> Import Excell File</button>
+                <button type='button' className='btn btn-info text-light'><i className='bx bx-export' ></i> Export Excell File</button>
               </div>
               <div className="d-flex" role="search">
                 <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={handleChange} />
@@ -441,10 +467,10 @@ function Salons() {
                   setLat(ev.latLng.lat());
                   setLng(ev.latLng.lng());
                 }}>
-                  <div className='d-flex justify-content-start position-relative gap-3' style={{height:"10%", top: "2.5%", left: "19%"}}>
+                  <div className='d-flex justify-content-start position-relative gap-3' style={{ height: "10%", top: "2.5%", left: "19%" }}>
                     <button type="button" className='border-0 bg-light rounded-1' style={{ height: "100%", width: "4%" }} onClick={() => map.panTo({ lat: lat, lng: lng })}><i className='bx bx-current-location fs-5'></i></button>
-                    <Autocomplete onPlaceChanged={onPlaceChanged} onLoad={onLoad}> 
-                      <input type="text" placeholder='Search' className='px-2 border-0 bg-light rounded-1' style={{height:"100%"}} />
+                    <Autocomplete onPlaceChanged={onPlaceChanged} onLoad={onLoad}>
+                      <input type="text" placeholder='Search' className='px-2 border-0 bg-light rounded-1' style={{ height: "100%" }} />
                     </Autocomplete>
                   </div>
                   <MarkerF position={{ lat: lat, lng: lng }} />

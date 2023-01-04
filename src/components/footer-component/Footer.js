@@ -25,6 +25,7 @@ function Footer() {
 
     function editContacts(){
         nav('/updatecontacts')
+        window.scrollTo(0, 0);
     }
 
     return (

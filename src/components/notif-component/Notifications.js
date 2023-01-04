@@ -10,6 +10,7 @@ function Notifications() {
   const [cities, setCities] = useState([])
   const [first, setFirst] = useState({})
   const [restNotif, setRestNotif] = useState([])
+  const [flag, setFlag] = useState(false)
 
   // Get notifications from Database
   useEffect(() => {
@@ -26,6 +27,22 @@ function Notifications() {
       setCities(res.data.data)
     })
   }, [])
+
+  // Rerendering after any operation
+  useEffect(() => {
+    axiosInstance.get('/api/v1/dashboard/notifications').then((res) => {
+      res.data.data.reverse()
+      console.log(res.data.data)
+      setFirst(res.data.data[0])
+      res.data.data.shift()
+      console.log(res.data.data)
+      setRestNotif(res.data.data)
+    })
+    axiosInstance.get('/api/v1/dashboard/cities').then((res) => {
+      console.log(res.data.data)
+      setCities(res.data.data)
+    })
+  }, [flag])
 
   // Pagination functions
   const [currentItems, setCurrentItems] = useState([]);
@@ -70,6 +87,10 @@ function Notifications() {
     axiosInstance.post('/api/v1/dashboard/notifications', formD).then((res) => {
       console.log(res.data)
       swal("New Notification added successfully")
+      if (flag === false)
+        setFlag(true)
+      if (flag === true)
+        setFlag(false)
     })
   };
 
@@ -78,6 +99,10 @@ function Notifications() {
     axiosInstance.delete(`/api/v1/dashboard/notifications/${notifID.id}`).then((res) => {
       console.log(res.data)
       swal("Notification deleted successfully")
+      if (flag === false)
+        setFlag(true)
+      if (flag === true)
+        setFlag(false)
     })
   }
 
@@ -201,9 +226,9 @@ function Notifications() {
           />
         </div>
         <div className="collapse multi-collapse row" id="multiCollapseExample2">
-          <div className="card card-body d-flex flex-row justify-content-start">
-            <div className='w-25 text-center align-self-center'>
-              <img src={notifID.img} alt={notifID.id} />
+          <div className="card card-body d-flex flex-row justify-content-start gap-4">
+            <div className='w-25 text-center align-self-center '>
+              <img src={notifID.img} alt={notifID.id} className='w-50'/>
             </div>
             <div className='w-25'>
               <h5>Title</h5>
