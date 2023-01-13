@@ -12,6 +12,7 @@ import Notifications from './components/notif-component/Notifications';
 import Reservations from './components/reservations-component/Reservations';
 import Footer from './components/footer-component/Footer';
 import EditContacts from './components/footer-component/EditContacts';
+import Branches from './components/branches-component/Branches';
 import { Route,Routes } from 'react-router-dom';
 
 function App(){
@@ -30,6 +31,7 @@ function App(){
         <Route path='/notifications' element={<Notifications />} />
         <Route path='/reservations' element={<Reservations />} />
         <Route path='/updatecontacts' element={<EditContacts />} />
+        <Route path='/branches' element={<Branches />} />
       </Routes>
       <Footer></Footer>
     </>

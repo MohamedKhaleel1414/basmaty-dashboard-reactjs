@@ -53,14 +53,13 @@ function Footer() {
                         </div>
                         <div className='d-flex justify-content-start gap-4'>
                             <i className='bx bx-envelope fs-4 '></i>
-                            <p>{contacts.email}</p>
+                            <p><a href='mailto:`{contacts.email}`'>{contacts.email}</a></p>
                         </div>
                         <div className='d-flex justify-content-start gap-3'>
                             <div className='' style={{ width: "9%" }}>
                                 <img src={whats} className='w-100' />
                             </div>
-                            <p>{contacts.whatsapp}</p>
-                        </div>
+                            <p><a href='http://wa.me/`{contacts.whatsapp}`'>{contacts.whatsapp}</a></p>                        </div>
                     </div>
                     <div className='w-25'>
                         <div className='d-flex justify-content-start gap-3'>

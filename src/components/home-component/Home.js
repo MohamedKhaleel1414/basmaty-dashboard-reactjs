@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { axiosInstance } from '../../config/axios'
 import { Bar } from 'react-chartjs-2'
+import { Chart as ChartJS } from 'chart.js/auto'
 
 function Home() {
 
-    const [allres, setAllres] = useState([])
     const [reservations, setReservations] = useState([])
     const [first, setFirst] = useState({})
     const [restNotif, setRestNotif] = useState([])
@@ -13,6 +13,7 @@ function Home() {
     const [chartDatatoday, setChartDatatoday] = useState([])
     const [chartDatayesterday, setChartDatayesterday] = useState([])
     const [chartDatabeforeyesterday, setChartDatabeforeyesterday] = useState([])
+    
     // Get today date
     let today = new Date()
     let todayx = today.toISOString()
@@ -29,12 +30,24 @@ function Home() {
     let beforeyesterdayy = beforeyesterdayx.slice(0,10)
     let beforeyesterdayz = beforeyesterdayy.replace(/-/g,"/")
 
+    const [resChart, setResChart] = useState({
+        labels: [beforeyesterdayz,yesterdayz,todayz],
+        datasets:[{
+            label:"Reservations",
+            data:[chartDatabeforeyesterday.length,chartDatayesterday.length,chartDatatoday.length],
+            // data:[5,7,10],
+            backgroundColor:["#c9f8c7"],
+            borderColor:"lightgrey",
+            borderWidth:1,
+            barThickness:50
+        }]
+    })
+
 
     // Get Reservations and Notifications from Database
     useEffect(() => {
         axiosInstance.get('/api/v1/dashboard/reservations').then((res) => {
             console.log(res.data.data)
-            setAllres(res.data.data)
             setReservations(res.data.data.slice(0, 5))
             let todayres = res.data.data.filter((itm,idx)=> itm.reserved_at.includes(todayz))
             setChartDatatoday(todayres)
@@ -97,7 +110,8 @@ function Home() {
                                     </div>
                                 </div>
                             </div>
-
+                            {restNotif.length !==0 ?
+                            <>
                             {restNotif.map((not, idx) => {
                                 return (
                                     <div key={idx} className="d-flex justify-content-between gap-2 gap-md-4 py-2 fs-5">
@@ -110,7 +124,9 @@ function Home() {
                                         </div>
                                     </div>
                                 )
-                            })}
+                            })}</> : <>
+                                <div>N</div>
+                            </>}
                         </div>
                     </div>
                     <div className='w-75 p-5'>
@@ -118,10 +134,9 @@ function Home() {
                             {/* background-color: #F7D9E3; */}
                             <div className="fs-5 px-4 " style={{ fontWeight: 600, color: '#C13F55' }}>Reservations</div>
                             <div className="my-4">
-                                {/* <canvas id="earningChart" style={{ width: '100%' }} /> */}
-                                {/* <Bar data={} options={} /> */}
+                                <Bar data={resChart} options={{}} />
                             </div>
-                            <div className="fs-4 px-4" style={{ direction: 'rtl', fontWeight: 700, color: '#C13F55' }}>50</div>
+                            <div className="fs-4 px-4" style={{ direction: 'rtl', fontWeight: 700, color: '#C13F55' }}>{chartDatatoday.length}</div>
                         </div>
                     </div>
                 </div>
