@@ -99,17 +99,17 @@ function Home() {
                     <div className='w-100'>
                         <div className="sectiontwo container bg-white rounded-4 p-4">
                             <div className="mb-4 fw-bold fs-5 mt-5">Latest Updates</div>
-                            <div className='col'>
+                            {first !== undefined && <div className='col'>
                                 <div className="row  d-flex justify-content-between gap-2 gap-md-4 py-2 fs-5">
                                     <div className='d-flex justify-content-start gap-4'>
                                         <div className="d-flex justify-content-center gap-4 pe-2 align-items-center">
-                                            <div className="text-center">{first.date}</div>
+                                            <div className="text-center">{first?.date}</div>
                                             <i className="bx bx-circle fw-bolder align-self-center text-center" style={{ color: '#C13F55', width: '5%' }} />
                                         </div>
-                                        <div>{first.description}</div>
+                                        <div>{first?.description}</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>}
                             {restNotif.length !==0 ?
                             <>
                             {restNotif.map((not, idx) => {
@@ -125,7 +125,7 @@ function Home() {
                                     </div>
                                 )
                             })}</> : <>
-                                <div>N</div>
+                                <div>No data to show here</div>
                             </>}
                         </div>
                     </div>

@@ -185,7 +185,7 @@ function Admin() {
           <table className="table table-striped text-center">
             <thead>
               <tr>
-                <th scope="col">ID</th>
+                <th scope="col">#</th>
                 <th scope="col">First</th>
                 <th scope="col">Last</th>
                 <th scope="col">E-mail</th>
@@ -198,7 +198,7 @@ function Admin() {
               {currentItems.map((admin, index) => {
                 return (
                   <tr key={index}>
-                    <th scope="row">{admin.id}</th>
+                    <th scope="row">{index+1+itemOffset}</th>
                     <td>{admin.first_name}</td>
                     <td>{admin.last_name}</td>
                     <td>{admin.email}</td>

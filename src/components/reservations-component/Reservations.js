@@ -101,7 +101,7 @@ function Reservations() {
                     <table className="table table-striped text-center">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
+                                <th scope="col">#</th>
                                 <th scope="col">Code</th>
                                 <th scope="col">Shop</th>
                                 <th scope="col">Reserved at</th>
@@ -114,7 +114,7 @@ function Reservations() {
                             {currentItems.map((admin, index) => {
                                 return (
                                     <tr key={index}>
-                                        <th scope="row">{admin.id}</th>
+                                        <th scope="row">{index+1+itemOffset}</th>
                                         <td>{admin.code}</td>
                                         <td>{admin.shop.name}</td>
                                         <td>{admin.reserved_at}</td>

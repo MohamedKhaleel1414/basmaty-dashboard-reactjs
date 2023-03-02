@@ -210,7 +210,7 @@ function Offers() {
                     <table className="table table-striped align-middle text-center">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
+                                <th scope="col">#</th>
                                 <th scope="col">Title</th>
                                 <th scope="col">Offered By</th>
                                 <th scope="col">Status</th>
@@ -223,7 +223,7 @@ function Offers() {
                             {currentItems.map((service, index) => {
                                 return (
                                     <tr key={index}>
-                                        <th scope='row'>{service.id}</th>
+                                        <th scope='row'>{index+1+itemOffset}</th>
                                         <td>{service.title}</td>
                                         <td>{service.shop.name}</td>
                                         <td>{service.active === 0 ? (<div className='text-success fw-bold'>Active</div>) : (<div className='text-danger fw-bold'>InActive</div>)} </td>

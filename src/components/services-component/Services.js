@@ -187,7 +187,7 @@ function Services() {
                     <table className="table table-striped align-middle text-center">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
+                                <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Photo</th>
                                 <th scope='col'>Description</th>
@@ -199,7 +199,7 @@ function Services() {
                             {currentItems.map((service, index) => {
                                 return (
                                     <tr key={index}>
-                                        <th scope='row'>{service.id}</th>
+                                        <th scope='row'>{index+1+itemOffset}</th>
                                         <td>{service.name}</td>
                                         <td>
                                             <div style={{ height: '2rem' }}>

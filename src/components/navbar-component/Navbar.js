@@ -59,8 +59,8 @@ function Navbar() {
                                         <img src={logo} alt="basmaty" style={{ width: '75%' }} />
                                     </div>
                                     <div>
-                                        <div style={{ lineHeight: '22px' }}>Basmaty</div>
-                                        <div style={{ lineHeight: '22px' }}>بـــسمتــي</div>
+                                        <div style={{ lineHeight: '26px' }}>Basma</div> 
+                                        <div style={{ lineHeight: '26px' }}>بـــسمة</div>
                                     </div>
                                 </div>
                             </h5>

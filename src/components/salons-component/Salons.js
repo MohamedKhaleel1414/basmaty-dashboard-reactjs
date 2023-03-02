@@ -263,7 +263,7 @@ function Salons() {
             <table className="table table-striped align-middle text-center">
               <thead>
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">#</th>
                   <th scope="col">Name</th>
                   <th scope="col">Logo</th>
                   <th scope="col">See More</th>
@@ -275,7 +275,7 @@ function Salons() {
                 {currentItems.map((salon, index) => {
                   return (
                     <tr key={index} style={{ maxWidth: "5" }}>
-                      <th scope='row'>{salon.id}</th>
+                      <th scope='row'>{index+1+itemOffset}</th>
                       <td>{salon.name}</td>
                       <td>
                         <div style={{ height: '2rem' }}>
